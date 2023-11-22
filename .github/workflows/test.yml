@@ -1,0 +1,31 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    runs-on: python:3.9
+    steps:
+    - name: Checkout Code
+      uses: actions/checkout@v2
+      
+    - name: Install curl
+      run: |
+        apt-get update
+        apt-get install -y curl
+
+    - name: Install Poetry
+      run: curl -sSL https://install.python-poetry.org | python3 -
+
+    # - name: Install NVIDIA CUDA Toolkit
+    #   run: |
+    #     sudo apt-get update
+    #     sudo apt-get install -y nvidia-cuda-toolkit nvidia-cuda-toolkit-gcc
+    
+    - name: Install Dependencies
+      run: |
+        poetry install
+
+    - name: Run Tests
+      run: poetry run python main.py
+
